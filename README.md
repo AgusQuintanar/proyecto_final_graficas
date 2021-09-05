@@ -9,6 +9,8 @@ Revive la experiencia de la película Insterstella y ve con tus propios ojos el 
 
 El proyecto está compuesto por vista en primera persona y en tercera persona. Estando tu dentro de los plantas que se presenta la película podrás ver lo que los ojos de los astronautas pudieron ver. La parte en tercera persona se complementa al momento de elegir tu siguiente parasa en la travesía de la película.
 
+Interpretación del mundo de Interstellar en tercera persona
 ![Interpretación del mundo de Interstellar en tercera persona](interstellar_1.png)
 ______________________________________________________
+Idea de interpretación del mundo en primera persona
 ![Idea de interpretación del mundo en primera persona](interstellar_2.jfif)
