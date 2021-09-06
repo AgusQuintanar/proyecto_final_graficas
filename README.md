@@ -16,12 +16,16 @@
 
 </br>
 
+<div style="margin-left:4%"">
+
     Interpretación del mundo de Interstellar en tercera persona
-![Interpretación del mundo de Interstellar en tercera persona](images/interstellar_1.png)
+<img src = "images/interstellar_1.png" width ="100%" />
 
     Idea de interpretación del mundo en primera persona
-![Idea de interpretación del mundo en primera persona](images/interstellar_2.jfif)
+<img src = "images/interstellar_2.jfif" width ="100%" />
 
+
+</div>
 
 
 </br>
@@ -44,17 +48,19 @@
 
 </br>
 
+<div style="margin-left:4%"">
 
     Niveles de Hielo
-![Niveles de Hielo](images/2_1.gif)
+<img src = "images/2_1.gif" width ="100%" />
+
 
     Niveles de Dioxido de Carbono
-![Niveles de Dioxido de Carbono](images/2_2.gif)
+<img src = "images/2_2.gif" width ="100%" />
 
     Temperatura Global
-![Temperatura Global](images/2_3.gif)
+<img src = "images/2_3.gif" width ="100%" />
 
-
+</div>
 
 </br>
 
@@ -68,11 +74,10 @@
 
     Ejemplos de como se veria: 
 
-</br>
+<center>
 
+<img src = "images/3_1.png"/>
 
-
-![](images/3_1.png)
-
+</center>
 
 
