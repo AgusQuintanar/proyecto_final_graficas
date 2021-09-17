@@ -33,51 +33,21 @@
 ---
 
 
-* ### Visualizador de las repercuciones del cambio climatico en la Tierra
+* ### Explicación de las escenas del proyecto
 
-    Consiste en un visualizador del globo terraqueo donde se muestren los niveles de Hielo, Dioxido de Carbono y Temperatura Global, con la finalidad de informar a la poblacion mundial las mediciones registradas de estos niveles, a lo largo de las ultimas decadas. En caso de tener tiempo de sobra, seria interesante generar un modelo predictivo de niveles en anios proximos, e informar de las repercusiones que traeria consigo, asi como informar de posibles soluciones para contrarestar el problema.
-
-    <br>
-
-    Se utilizaria la API de la NASA (https://github.com/nasa/apod-api) para obtener las mediciones (imagenes satelitales).
-
-    <br>
-
-    Existe un visualizador, muy similar a la idea del proyecto, hecho por la NASA: https://climate.nasa.gov/interactives/climate-time-machine/
-    
-
-</br>
-
-<div style="margin-left:4%"">
-
-    Niveles de Hielo
-<img src = "images/2_1.gif" width ="100%" />
+    A continuación se explican las escenas de como funcionaría la experiencia iteractiva
 
 
-    Niveles de Dioxido de Carbono
-<img src = "images/2_2.gif" width ="100%" />
+<img src = "images/scene_1.png" width ="100%" />
 
-    Temperatura Global
-<img src = "images/2_3.gif" width ="100%" />
+<img src = "images/scene_2.png" width ="100%" />
+
+<img src = "images/scene_3.png" width ="100%" />
+   
+<img src = "images/scene_4.png" width ="100%" />
 
 </div>
 
 </br>
 
 ---
-
-* ### WebGL Globe de vacunas de Covid aplicadas mundialmente
-
-    Consiste en agregar un experimento de tipo WebGL Globe (https://experiments.withgoogle.com/chrome/globe), donde se pueda visualizar de manera interactiva las distintas vacunas de COVID-19 aplicadas en tiempo real (un dia de lag), y si el tiempo lo permite, crear un timelapse con todas las mediciones hasta la actualidad, y un modelo para simular cuando terminaria la vacunacion (casi por completo) alrededor del mundo. ]
-
-    <br>
-
-    Ejemplos de como se veria: 
-
-<center>
-
-<img src = "images/3_1.png"/>
-
-</center>
-
-
