@@ -43,13 +43,13 @@
 
 <div style="margin-left:4%"">
 
-<img src = "scene_1.png" width ="100%" />
+<img src = "images/scene_1.png" width ="100%" />
 
-<img src = "scene_2.png" width ="100%" />
+<img src = "images/scene_2.png" width ="100%" />
 
-<img src = "scene_3.png" width ="100%" />
+<img src = "images/scene_3.png" width ="100%" />
    
-<img src = "scene_4.png" width ="100%" />
+<img src = "images/scene_4.png" width ="100%" />
 
 </div>
 
