@@ -37,10 +37,6 @@
 
     A continuación se explican las escenas de como funcionaría la experiencia iteractiva
 
-    <br>
-                                                     
-</br>
-
 
 <img src = "images/scene_1.png" width ="100%" />
 
