@@ -41,7 +41,6 @@
                                                      
 </br>
 
-<div style="margin-left:4%"">
 
 <img src = "images/scene_1.png" width ="100%" />
 
