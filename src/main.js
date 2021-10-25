@@ -127,9 +127,9 @@ async function createScene(canvas) {
 	let waves = {obj:'../assets/waves/Ocean.obj', mtl:'../assets/waves/Ocean.obj.sxfil.mtl'};
 
 
-	await loadGLTF("../assets/gargantua2/scene.gltf", p1, 0.5);
+	await loadGLTF("../assets/gargantua/source/bh.gltf", p1, 0.5);
 
-	await loadGLTF("../assets/manns/mann.gltf", p2, 0.5);
+	await loadGLTF("../assets/manns/mann.gltf", p2, 0.5, -Math.PI/2);
 
 	await loadGLTF("../assets/spaceship2/scene.gltf", p3, 200);
 
@@ -137,7 +137,7 @@ async function createScene(canvas) {
 
 	await loadObjMtl(waves, p5, 200);
 
-	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", p6, 1);
+	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", p6, 0.25);
 
 	scene.add(p1);
 	scene.add(p2);
@@ -194,7 +194,7 @@ function onProgress( xhr )
 }
 
 
-async function loadGLTF(url, parent, scale=1) {
+async function loadGLTF(url, parent, scale=1, rotateX=0) {
 	const loader = new GLTFLoader();
 
 	// const dracoLoader = new DRACOLoader();
@@ -213,6 +213,9 @@ async function loadGLTF(url, parent, scale=1) {
 	);
 	
 	object.scene.scale.set(scale, scale, scale);
+
+	object.scene.rotateX(rotateX);
+
 	console.log(object.scene);
 
 	parent.add(object.scene);
