@@ -1,0 +1,11 @@
+Model Information:
+* title:	ALIEN SPACESHIP 3D MODEL
+* source:	https://sketchfab.com/3d-models/alien-spaceship-3d-model-82064e2780514531876b7bb55972cebc
+* author:	POLYCOUNT.3D (https://sketchfab.com/kichujoy10)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "ALIEN SPACESHIP 3D MODEL" (https://sketchfab.com/3d-models/alien-spaceship-3d-model-82064e2780514531876b7bb55972cebc) by POLYCOUNT.3D (https://sketchfab.com/kichujoy10) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

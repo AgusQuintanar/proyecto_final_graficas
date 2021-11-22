@@ -51,3 +51,22 @@
 </br>
 
 ---
+
+* ### Librerias a utilizar
+    * WebGL
+    * ThreeJS
+
+
+
+---
+
+* ### Plan de trabajo
+
+    1.  Redactar guion de la historia a contar, desarrollando narraciones, dialogos, escenas, duracion de estos, etc. **(Liz)**
+    2.  Crear todos los assets necesarios, como texturas, materiales, meshes, etc que comprenderan el "universo a desarrollar". **(Liz)**
+    3.  Crear el modelo grafico base, para que el usuario pueda "interactuar" con la experiencia grafica. Consistiria en crear templates de escenas, cuadros de dialogos, objetos interactivos, etc. **(Agustin)**
+    4.  Tomar el modelo grafico creado, y transcribir el guion creado previamente. **(Agustin)**
+
+</br>
+
+
