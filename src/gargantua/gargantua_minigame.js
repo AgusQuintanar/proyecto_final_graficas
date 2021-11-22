@@ -7,21 +7,21 @@ var createQuestion = function(prompt, correctAnswer) {
 
 
 //===== CREATING NEW QUESTIONS FOR GAME A - DOT-DASH ====//
-var question0a = new createQuestion ('-', 'T');
-var question1a = new createQuestion ('---', 'O');
-var question2a = new createQuestion ('---..', '8');
-var question3a = new createQuestion ('--. ---', 'GO');
-var question4a = new createQuestion ('-.-. .- -', 'CAT');
-var question5a = new createQuestion ('.-. ..- -.', 'RUN');
-var question6a = new createQuestion ('-.-. --- .-.. -..', 'COLD');
-var question7a = new createQuestion ('.-.. --- ...- .', 'LOVE');
-var question8a = new createQuestion ('-... --- - - --- --', 'BOTTOM');
-var question9a = new createQuestion ('..-. .- -- .. .-.. -.--', 'FAMILY');
+var q0 = new createQuestion ('...', 'S');
+var q1 = new createQuestion ('-', 'T');
+var q2 = new createQuestion ('.-', 'A');
+var q3 = new createQuestion ('-.--', 'Y');
+var q4a = new createQuestion ('-.-. .- -', 'CAT');
+var q5a = new createQuestion ('.-. ..- -.', 'RUN');
+var q6a = new createQuestion ('-.-. --- .-.. -..', 'COLD');
+var q7a = new createQuestion ('.-.. --- ...- .', 'LOVE');
+var q8a = new createQuestion ('-... --- - - --- --', 'BOTTOM');
+var q9a = new createQuestion ('..-. .- -- .. .-.. -.--', 'FAMILY');
 
 //===== AN OBJECT TO REPRESENT ALL GAME ELEMENTS TOGETHER =====/
 var game = {
     currentQuestion: 0,
-    questions: [question0a],
+    questions: [q0, q1, q2, q3],
     isGameOver: false,
     playerScore: 0
 };
@@ -111,7 +111,7 @@ var updateDisplay = function(){
         $('.peek').removeClass('disappear');
         $('#enter h3').text('Volver a comenzar?');
         $('#enter').on('click', function(event){
-            window.location = "./dotdash.html";
+            window.location = "./gargantua_minigame.html";
         });
             
     }
@@ -131,10 +131,10 @@ var displayMsg = function(input) {
     }
     if (game.questions[game.currentQuestion].correctAnswer === input)
     {
-        return "Awesome! That's correct!";
+        return 'Increible! Eso es correcto!';
     }
     else {
-        return 'Wrong! Try this next one.';
+        return 'Incorrecto! Descifra el siguiente mensaje.';
     }
 };
 
