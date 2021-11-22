@@ -4,6 +4,7 @@ import { OBJLoader } from '../libs/three.js/r131/loaders/OBJLoader.js';
 import { GLTFLoader } from '../libs/three.js/r131/loaders/GLTFLoader.js';
 import { DRACOLoader } from '../libs/loaders/DRACOLoader.js';
 import { FBXLoader } from '../libs/three.js/r131/loaders/FBXLoader.js';
+import { MillerScene } from './millerScene.js';
 
 
 import { RoughnessMipmapper } from '../libs/loaders/RoughnessMipmapper.js';
@@ -14,6 +15,8 @@ import { OrbitControls } from "../libs/three.js/r131/controls/OrbitControls.js";
 
 let renderer = null,
 	scene = null,
+	mainScene = null,
+	millerScene = null,
 	camera = null,
 	orbitControls = null,
 	ambiente = null;
@@ -22,16 +25,26 @@ let duration = 100000000; // ms
 let currentTime = Date.now();
 
 let spotLight = null,
-	ambientLight = null;
+	ambientLight = null,
+	directionalLight = null;
 
 let SHADOW_MAP_WIDTH = 2048,
 	SHADOW_MAP_HEIGHT = 2048;
+
 
 function main() {
 	const canvas = document.getElementById("webglcanvas");
 
 	// create the scene
-	createScene(canvas);
+	createMainScene(canvas);
+	// createMillerScene(canvas);
+	millerScene = new MillerScene(canvas);
+
+	console.log("siiuuuu", millerScene.scene);
+
+
+	//scene = mainScene;
+	scene = millerScene.scene;
 
 	// update the update loop
 	update();
@@ -45,9 +58,11 @@ function animate() {
     let fract = deltat / duration;
     let angle = Math.PI * 2 * fract;
 
+	millerScene.update();
+
 }
 
-function createAmbiente() {
+function createAmbiente(scene) {
 	// crea un ambiente y le agrega distintos tipos de luces y un piso, al grafo de la escena
 	ambiente = new THREE.Object3D();
 
@@ -83,7 +98,7 @@ function update() {
 	orbitControls.update();
 }
 
-async function createScene(canvas) {
+async function createMainScene(canvas) {
 	renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
 
 	renderer.setSize(canvas.width, canvas.height);
@@ -95,7 +110,7 @@ async function createScene(canvas) {
 
 
 	// creamos la escena
-	scene = new THREE.Scene();
+	mainScene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera(
 		45,
@@ -104,12 +119,12 @@ async function createScene(canvas) {
 		4000
 	);
 	camera.position.set(0, 10, 40); // cambiamos la posicion de la camara
-	scene.add(camera);
+	mainScene.add(camera);
 
     // usamos los orbits controls para poder interactual con la escena de manera dinamica
 	orbitControls = new OrbitControls(camera, renderer.domElement); 
 
-	createAmbiente();
+	createAmbiente(mainScene);
 	
 
 	const p1 = new THREE.Object3D();
@@ -139,12 +154,12 @@ async function createScene(canvas) {
 
 	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", p6, 0.25);
 
-	scene.add(p1);
-	scene.add(p2);
-	scene.add(p3);
-	scene.add(p4);
-	scene.add(p5);
-	scene.add(p6);
+	mainScene.add(p1);
+	mainScene.add(p2);
+	mainScene.add(p3);
+	mainScene.add(p4);
+	mainScene.add(p5);
+	mainScene.add(p6);
 
 	const video = document.getElementById('video');
 	video.play();
@@ -156,8 +171,61 @@ async function createScene(canvas) {
 	const screen = new THREE.PlaneGeometry(900, 600, 100, 100);
 	const videoScreen = new THREE.Mesh(screen, videoMaterial);
 	videoScreen.position.set(-1000, 800, 0);
-	scene.add(videoScreen);
+	mainScene.add(videoScreen);
 
+}
+
+async function createMillerScene(canvas) {
+	renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+
+	renderer.setSize(canvas.width, canvas.height);
+
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+	renderer.outputEncoding = THREE.sRGBEncoding;
+
+
+	// creamos la escena
+	millerScene = new THREE.Scene();
+
+	camera = new THREE.PerspectiveCamera(
+		45,
+		canvas.width / canvas.height,
+		1,
+		4000
+	);
+	camera.position.set(0, 10, 40); // cambiamos la posicion de la camara
+	millerScene.add(camera);
+
+	     
+
+    var ambientLight2 = new THREE.AmbientLight ( 0x444444, 0.8);
+    millerScene.add(ambientLight2);
+
+    // usamos los orbits controls para poder interactual con la escena de manera dinamica
+	orbitControls = new OrbitControls(camera, renderer.domElement); 
+
+
+	// Create a group to hold the objects
+	var group = new THREE.Object3D;
+	millerScene.add(group);
+
+	// Create a texture map
+	const map = new THREE.TextureLoader().load("../images/checker_large.gif");
+	map.wrapS = map.wrapT = THREE.RepeatWrapping;
+	map.repeat.set(8, 8);
+	// Put in a ground plane to show off the lighting
+	let geometry = new THREE.PlaneGeometry(200, 200, 50, 50);
+	let mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({map:map, side:THREE.DoubleSide}));
+
+	mesh.rotation.x = -Math.PI / 2;
+	mesh.position.y = -4.02;
+	mesh.castShadow = false;
+	mesh.receiveShadow = true;
+	group.add( mesh );
+
+	createAmbiente(mainScene);
 }
 
 

@@ -1,0 +1,354 @@
+@import url(./reset.css);
+
+* {
+    box-sizing: border-box;
+      
+}
+
+body {
+    background-color: #fb6b6b;
+    background-size: cover;
+    background-repeat: repeat-y;
+}
+
+#container {
+    max-width:1000px;
+    margin: 0 auto;
+}
+
+.hand {
+    font-family: 'Itim', sans-serif;
+}
+
+.poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+    font-size: 6em;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+h3 {
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+h4 {
+    font-size: 1.8em;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+h5 {
+    font-size: 1.2em;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.5;
+}
+
+.white {
+    color: white;
+}
+
+header {
+    text-align: center;
+    margin-top: 50px;
+}
+
+header img {
+    margin-bottom: 30px;
+    
+}
+
+.logo {
+    width: 100%;
+    max-width: 500px;
+}
+
+.instructions {
+    margin: 80px 0 20px 0;
+    font-size: 1.2em;
+}
+
+button {
+    border-radius: 20px;
+    width: 150px;
+    padding: 8px;
+    margin: 10px;
+    border: none;
+    background-color: white;
+}
+
+button:hover {
+    box-shadow: 0px 5px 5px 2px saddlebrown;
+}
+
+.gamemode {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#score, #time {
+    font-size: 1em;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 20px 0;
+    width: 100px;
+}
+
+#score {
+    order: 0;
+}
+
+#time {
+    order: 2;
+}
+
+#morsechart {
+    flex:3;
+    border: none;
+    margin: 0 auto;
+    text-align: center;
+    top: -400px;
+    order: 1;
+}
+#pre {
+    flex:2;
+}
+
+.pregame h4 {
+    margin-bottom: 20px;
+}
+
+#pre img {
+    max-width: 70%;
+    border:30px solid white;
+}
+
+/*contains morse chart*/
+#testbox {
+    width: 600px;
+    background: white;
+    background-image: url(./img/morsechart.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    margin: 0 auto;
+    box-shadow: 3px 10px 10px -2px saddlebrown;
+    
+}
+
+/*hides morse chart*/
+.smallbox {
+    transition: height 0.5s ease-out;
+    height: 20px;
+}
+
+/*opens up morse chart*/
+.bigbox {
+    transition: height 0.5s ease-out;
+    height: 400px;
+}
+
+#morsechart img {
+    width: 100%;
+    box-shadow: 3px 10px 10px -2px saddlebrown;
+}
+
+.hideshow {
+    border-radius: 20px;
+    border: 3px solid white;
+    width: 150px;
+    padding: 5px;
+    margin: 20px auto;
+    text-transform: uppercase;
+    font-size: 0.6em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-weight: 700px;
+    color: white;
+}
+
+.hideshow:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #FBB03B;
+}
+
+/*=========== MAIN CONTENT AREA ===========*/
+#qn img{
+    cursor: pointer;
+    width: 80px;
+}
+
+main {
+    text-align: center;
+}
+
+main p {
+    font-size: 1.2em;
+    line-height: 1.5;
+
+}
+
+main h5 {
+    color: white;
+    margin-top: 30px;
+    font-size: 1.5em;
+}
+
+strong {
+    font-weight: 700;
+}
+
+#bigbtn {
+    color: #FBB03B;
+    letter-spacing: 2px;
+    font-size: 1.3em;
+    background-color: white;
+    padding: 13px 10px 8px 10px;
+    border-radius: 50px;
+    max-width: 200px;
+    margin: 30px auto;
+    cursor: pointer;
+}
+
+#bigbtn:hover {
+    box-shadow: 0px 5px 5px 2px saddlebrown;
+    -webkit-transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+}
+
+.disappear {
+    display: none;
+}
+
+#prompts {
+    color: white;
+    margin: 50px auto;
+    
+}
+
+#chartmsg h5 {
+    color: darkslategrey;
+    margin: 20px auto;
+}
+
+.smaller {
+    font-size: 1.5em;
+    font-weight:700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: -50px;
+}
+
+#qn {
+    color: darkslategrey;
+    margin: 50px auto;
+}
+
+#playbtn {
+    width: 80px;
+    height:80px;
+    border-radius: 50%;
+    background: white;
+    margin:0 auto;
+    box-shadow: 0px 3px 2px -2px saddlebrown;
+}
+#playbtn:hover{
+   box-shadow: 0px 5px 5px 2px saddlebrown; 
+}
+
+form #playerinput {
+    /*background: none;
+    border-bottom: 10px solid white;*/
+    box-shadow: 0px 2px 2px -1px saddlebrown; 
+    height: 50px;
+    width: 500px;
+    font-size: 1.5em;
+    margin: 50px auto 30px;
+    padding: 10px 20px;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.peek {
+    margin-bottom: -30px;
+}
+
+#enter {
+    color: white;
+    letter-spacing: 2px;
+    font-size: 1.3em;
+    background-color: #FBB03B;
+    padding: 13px 10px 8px 10px;
+    border-radius: 50px;
+    border: 4px solid white;
+    max-width: 350px;
+    margin: 30px auto;
+    cursor: pointer;
+    box-shadow: 0px 3px 2px -2px saddlebrown;
+}
+
+#enter:hover {
+    box-shadow: 0px 5px 5px 2px saddlebrown;
+    -webkit-transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+}
+
+#status {
+    text-transform: 2px;
+    font-size: 1.2em;
+    font-family: 'Itim', sans-serif;
+    text-transform: uppercase;
+}
+
+/*=== PREGAME PAGE ===*/
+#learnchart {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 70%;
+    margin: 0 auto;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+#learnchart img {
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 3px solid white;
+    box-shadow: 0px 3px 2px -2px saddlebrown;
+}
+
+#learnchart img:hover {
+    box-shadow: 0px 10px 10px -5px saddlebrown;
+    -webkit-transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+    
+}
+
+#pretitle {
+    color: white;
+    letter-spacing: 2px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.center {
+    margin: 0 auto;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
