@@ -1,20 +1,17 @@
 import * as THREE from "../libs/three.js/r131/three.module.js";
 
-import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
 import { Water } from 'https://threejs.org/examples/jsm/objects/Water.js';
 import { Sky } from 'https://threejs.org/examples/jsm/objects/Sky.js';
 
 export class MillerScene {
-    constructor(canvas) {
+    constructor(renderer) {
 
         const scene = buildScene();
-        const renderer = buildRenderer(canvas);
         const camera = buildCamera();
         const sphere = buildSphere();
         const sky = buildSky();
         const sun = buildSun();
         const water = buildWater();
-        const orbitCon = setOrbitControls();
 
         this.scene = scene;
         this.renderer = renderer;
@@ -22,20 +19,11 @@ export class MillerScene {
         this.sphere = sphere;
         this.sky = sky;
         this.water = water;
-        this.orbitCon = orbitCon;
         this.sun = sun;
 
         function buildScene() {
             const scene = new THREE.Scene();
             return scene;
-        }
-
-        function buildRenderer(canvas) {
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            canvas.appendChild(renderer.domElement);
-            return renderer;
         }
 
         function buildCamera() {
@@ -106,15 +94,6 @@ export class MillerScene {
             return sphere;
         }
 
-        function setOrbitControls() {
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.maxPolarAngle = Math.PI * 0.495;
-            controls.target.set(0, 10, 0);
-            controls.minDistance = 40.0;
-            controls.maxDistance = 200.0;
-            controls.update();
-            return controls;
-        }
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;

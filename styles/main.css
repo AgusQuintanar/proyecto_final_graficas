@@ -14,9 +14,11 @@ body {
 	position:absolute;
 }
 
-#webglcanvas {
+#canvas {
 	border:none;
-	background-color:#fd0000;
+	background-color:#000000;
+	width: 100vw;
+	height: 100vh;
 }
 
 #info {

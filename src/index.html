@@ -1,29 +1,39 @@
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>Interstellar</title>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Interstellar</title>
 
-<link rel="stylesheet" href="../styles/main.css" />
+		<link rel="stylesheet" href="../styles/main.css" />
 
-<script type="module"  defer src="main.js"></script>
+		<script type="module" defer src="main.js"></script>
 
-<style>
-    body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      border: 0;
-      overflow: hidden; 
-    }
-</style>
+		<style>
+			body {
+				width: 100vw;
+				height: 100vh;
+				margin: 0;
+				border: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<div id="info">
+			El sistema de dialogos estara implementado mediante HTML
+		</div>
 
-</head>
-<body>
-    <canvas id="webglcanvas"></canvas>
-    <div id="info">El sistema de dialogos estara implementado mediante HTML</div>
-
-    <video id="video" playsinline webkit-playsinline muted loop autoplay width="320" height="240" src="../assets/wormhole.mp4" style="display: none;"></video>
-
-</body>
-
+		<video
+			id="video"
+			playsinline
+			webkit-playsinline
+			muted
+			loop
+			autoplay
+			width="320"
+			height="240"
+			src="../assets/wormhole.mp4"
+			style="display: none"
+		></video>
+	</body>
 </html>
