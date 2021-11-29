@@ -12,11 +12,11 @@ let scenes = {
 };
 
 async function main() {
-	const canvas = document.getElementById("canvas");
+	const canvas = document.getElementById("webglcanvas");
 
 	await createSceneManager(canvas);
 
-	currentScene = scenes.millerScene;
+	currentScene = scenes.mainScene;
 
 	update();
 }
@@ -35,10 +35,7 @@ async function createSceneManager(canvas) {
 
 	scenes.millerScene = new MillerScene(renderer);
 
-	// for (const scene in scenes) {
-	// 	scenes[scene].init();
-	// }
-
+	scenes.mainScene.init();
 	scenes.millerScene.init();
 }
 
@@ -53,7 +50,7 @@ function update() {
 function resize() {
 	// En caso de que se haga un resize de la ventana del navegador,
 	// se actualiza el aspecto de la camara
-	const canvas = document.getElementById("canvas");
+	const canvas = document.getElementById("webglcanvas");
 
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
