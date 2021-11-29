@@ -111,6 +111,17 @@ body {
 
 }
 
+#tiempoRestante {
+	position: absolute;
+	top: 2vh;
+	width: 80%;
+	z-index: 100;
+	color: white;
+	font-size: 5em;
+	left: 2%;
+	display: grid;
+}
+
 #scenes{
 	position: absolute;
 	bottom: 80vh;

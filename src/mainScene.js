@@ -1,7 +1,6 @@
 import * as THREE from "../libs/three.js/r131/three.module.js";
-import { FBXLoader } from '../libs/three.js/r131/loaders/FBXLoader.js';
+import { FBXLoader } from "../libs/three.js/r131/loaders/FBXLoader.js";
 import { OrbitControls } from "../libs/three.js/r131/controls/OrbitControls.js";
-
 
 let tars_robot = null;
 
@@ -33,112 +32,139 @@ const manns = new THREE.Object3D();
 
 let videoScreen = null;
 
-let raycaster = null, mouse = new THREE.Vector2(), intersected, clicked;
+let raycaster = null,
+	mouse = new THREE.Vector2(),
+	intersected,
+	clicked;
 
 let names = ["miller", "edmons", "manns"];
 let namesTextures = ["miller-textured", "edmons-textured", "manns-textured"];
 
-const infoDisplay = document.querySelector('#info');
-const tarsDisplay = document.querySelector('#tars');
-const continueButton = document.querySelector('#start');
-const millerText = document.querySelector('.cuadroTextMiller');
-const mannsText = document.querySelector('.cuadroTextManns');
-const edmonsText = document.querySelector('.cuadroTextEdmons');
-const infoScenes = document.querySelector('#scenes');
+const infoDisplay = document.querySelector("#info");
+const tarsDisplay = document.querySelector("#tars");
+const continueButton = document.querySelector("#start");
+const millerText = document.querySelector(".cuadroTextMiller");
+const mannsText = document.querySelector(".cuadroTextManns");
+const edmonsText = document.querySelector(".cuadroTextEdmons");
+const infoScenes = document.querySelector("#scenes");
 
 const canvas = document.getElementById("webglcanvas");
 
+const btnMisionMiller = document.querySelector("#misionMiller");
 
 export class MainScene {
-	constructor(render) {
+	constructor(render, moveToMillerScene, getMillerGameCompleted, firstTime) {
 		renderer = render;
-		continueButton.addEventListener("click", playText);
+
+		if (firstTime) {
+			continueButton.addEventListener("click", playText);
+		} else {
+			infoDisplay.style.display = "none";
+			continueButton.style.display = "none";
+		}
+
+		console.log("mision completada", getMillerGameCompleted());
+		if (getMillerGameCompleted()) {
+			btnMisionMiller.innerHTML = "Mision completada";
+			btnMisionMiller.disabled = true;
+			btnMisionMiller.addEventListener("click", () => {
+				console.log("nada");
+			});
+		} else {
+			btnMisionMiller.addEventListener("click", () => {
+				console.log("click");
+				moveToMillerScene();
+				infoDisplay.style.display = "none";
+				continueButton.style.display = "none";
+				tarsDisplay.style.display = "none";
+			});
+		}
 	}
 
 	async init() {
 		await createScene(renderer);
-		hideModels();
+		// hideModels();
 	}
 
-    update() {
-        renderer.render(scene, camera);
-        animate();
-        animateStars();
-        orbitControls.update();
-    }
+	update() {
+		renderer.render(scene, camera);
+		animate();
+		animateStars();
+		orbitControls.update();
+	}
 }
 
+function playText() {
+	continueButton.remove();
+	let text = [
+		"En 2067, la destrucción de las cosechas en la Tierra ha hecho que la agricultura sea cada vez más difícil y se vea amenazada la supervivencia de la humanidad",
+		"Joseph Cooper, ex piloto de la NASA ha sido reclutado nuevamente para emprender una misión Interestelar para encontrar un planeta fuera de nuestra galaxia que pueda albergar vida humana",
+		"Conociendo los peligros de la misión, Cooper decide dejar en la Tierra aquellos que él ama, en especial la pequeña Murph de tan solo 13 años",
+		"La misión conformada por los astronautas Romilly, Doyle y Amelia podria tomar decadas, pues tendrian que evaluar los planetas cercanos al agujero negro Gargantúa",
+	];
 
+	let textTars = [
+		"Soy TARS, un robot con inteligencia artificial que te acompañará en esta aventura interestelar. ",
+		"Han pasado 2 años desde el despegue de Cooper de la Tierra, han atravesado el agujero de gusano de Saturno y ahora se encuentran en la Galaxia lejana que contiene a Gargantúa. ",
+		"En la parte superior derecha podrás ver información que ayudará a entender la relatividad del tiempo en esta experiencia Interstellar.",
+		"Actualmente Cooper tiene 35 años, Murph 15 años y nos encontramos en el año 2069.",
+		"Te toca elegir qué experiencia vivir. Da clic en alguno de los planetas y descubre que sucederá.",
+	];
 
-function playText(){
-    continueButton.remove();
-    let text= [ 
-        "En 2067, la destrucción de las cosechas en la Tierra ha hecho que la agricultura sea cada vez más difícil y se vea amenazada la supervivencia de la humanidad",
-        "Joseph Cooper, ex piloto de la NASA ha sido reclutado nuevamente para emprender una misión Interestelar para encontrar un planeta fuera de nuestra galaxia que pueda albergar vida humana",
-        "Conociendo los peligros de la misión, Cooper decide dejar en la Tierra aquellos que él ama, en especial la pequeña Murph de tan solo 13 años",
-        "La misión conformada por los astronautas Romilly, Doyle y Amelia podria tomar decadas, pues tendrian que evaluar los planetas cercanos al agujero negro Gargantúa"];
+	setTimeout(function () {
+		infoDisplay.innerHTML = text[0];
+	}, 1000);
 
-    let textTars = [ "Soy TARS, un robot con inteligencia artificial que te acompañará en esta aventura interestelar. ",
-                    "Han pasado 2 años desde el despegue de Cooper de la Tierra, han atravesado el agujero de gusano de Saturno y ahora se encuentran en la Galaxia lejana que contiene a Gargantúa. ",
-                    "En la parte superior derecha podrás ver información que ayudará a entender la relatividad del tiempo en esta experiencia Interstellar.",
-                    "Actualmente Cooper tiene 35 años, Murph 15 años y nos encontramos en el año 2069.",
-                    "Te toca elegir qué experiencia vivir. Da clic en alguno de los planetas y descubre que sucederá."];
+	setTimeout(function () {
+		infoDisplay.innerHTML = text[1];
+	}, 9000);
 
-    setTimeout(function(){
-        infoDisplay.innerHTML = text[0];
-    }, 1000);
+	setTimeout(function () {
+		infoDisplay.innerHTML = text[2];
+	}, 20000);
 
-    setTimeout(function(){
-        infoDisplay.innerHTML = text[1];
-    }, 9000);
+	setTimeout(function () {
+		infoDisplay.innerHTML = text[3];
+	}, 30000);
 
-    setTimeout(function(){
-        infoDisplay.innerHTML = text[2];
-    }, 20000);
-
-    setTimeout(function(){
-        infoDisplay.innerHTML = text[3];
-    }, 30000);
-
-    setTimeout(function(){
-        infoDisplay.innerHTML = "";
+	setTimeout(function () {
+		infoDisplay.innerHTML = "";
 		showModels();
-    }, 40000);
+	}, 40000);
 
-    setTimeout(function(){   
-        tarsDisplay.innerHTML = textTars[0];
-    }, 50000);
+	setTimeout(function () {
+		tarsDisplay.innerHTML = textTars[0];
+	}, 50000);
 
-    setTimeout(function(){
-        tarsDisplay.innerHTML = textTars[1];
-    }, 60000);
+	setTimeout(function () {
+		tarsDisplay.innerHTML = textTars[1];
+	}, 60000);
 
-    setTimeout(function(){
-        tarsDisplay.innerHTML = textTars[2];
-        actualizaInfo(35,15,2069);
-    }, 70000);
+	setTimeout(function () {
+		tarsDisplay.innerHTML = textTars[2];
+		actualizaInfo(35, 15, 2069);
+	}, 70000);
 
-    setTimeout(function(){
-        tarsDisplay.innerHTML = textTars[3]; 
-    }, 80000);
+	setTimeout(function () {
+		tarsDisplay.innerHTML = textTars[3];
+	}, 80000);
 
-    setTimeout(function(){
-        tarsDisplay.innerHTML = textTars[4];
-    }, 90000);
+	setTimeout(function () {
+		tarsDisplay.innerHTML = textTars[4];
+	}, 90000);
 }
 
 function animate() {
+	let now = Date.now();
+	let deltat = now - currentTime;
+	currentTime = now;
+	let fract = deltat / 10000;
+	let angle = Math.PI * 2 * fract;
 
-    let now = Date.now();
-    let deltat = now - currentTime;
-    currentTime = now;
-    let fract = deltat / 10000;
-    let angle = Math.PI * 2 * fract;
-
-    // Rotate the sphere group about its Y axis
-    miller.rotation.y += angle;
-    edmons.rotation.y += angle;
-    manns.rotation.y += angle;
+	// Rotate the sphere group about its Y axis
+	miller.rotation.y += angle;
+	edmons.rotation.y += angle;
+	manns.rotation.y += angle;
 }
 
 function createAmbiente() {
@@ -162,15 +188,20 @@ function createAmbiente() {
 	scene.add(ambiente);
 }
 
-
-function createMaterials(mapUrl, bumpMapUrl, nombre, nombreTexture)
-{
-    // Create a textre phong material for the cube
-    // First, create the texture map
-    textureMap = new THREE.TextureLoader().load(mapUrl);
-    bumpMap = new THREE.TextureLoader().load(bumpMapUrl);
-    materials[nombre] = new THREE.MeshPhongMaterial({ bumpMap: bumpMap, bumpScale: 0.01});
-    materials[nombreTexture] = new THREE.MeshPhongMaterial({ map: textureMap, bumpMap: bumpMap, bumpScale: 0.01 });
+function createMaterials(mapUrl, bumpMapUrl, nombre, nombreTexture) {
+	// Create a textre phong material for the cube
+	// First, create the texture map
+	textureMap = new THREE.TextureLoader().load(mapUrl);
+	bumpMap = new THREE.TextureLoader().load(bumpMapUrl);
+	materials[nombre] = new THREE.MeshPhongMaterial({
+		bumpMap: bumpMap,
+		bumpScale: 0.01,
+	});
+	materials[nombreTexture] = new THREE.MeshPhongMaterial({
+		map: textureMap,
+		bumpMap: bumpMap,
+		bumpScale: 0.01,
+	});
 }
 
 async function createScene(renderer) {
@@ -185,221 +216,230 @@ async function createScene(renderer) {
 	);
 	camera.position.set(20, 10, 80); // cambiamos la posicion de la camara
 	scene.add(camera.position);
-    
 
-    // usamos los orbits controls para poder interactual con la escena de manera dinamica
-	orbitControls = new OrbitControls(camera, renderer.domElement); 
+	// usamos los orbits controls para poder interactual con la escena de manera dinamica
+	orbitControls = new OrbitControls(camera, renderer.domElement);
 
-    //Añade estrellas
-    addSphere();
+	//Añade estrellas
+	addSphere();
 
-    //Música a la escena
-     var music = document.getElementById("audio");
-     music.play();
+	//Música a la escena
+	var music = document.getElementById("audio");
+	music.play();
 
-    //Añade luces
+	//Añade luces
 	createAmbiente();
 
 	tars_robot = new THREE.Object3D();
-    tars_robot.position.set(40, -8, 28);
-    tars_robot.rotateY(Math.PI / 25);
+	tars_robot.position.set(40, -8, 28);
+	tars_robot.rotateY(Math.PI / 25);
 
-    tars_robot.scale.x = 0.08;
-    tars_robot.scale.y = 0.08;
-    tars_robot.scale.z = 0.08;
+	tars_robot.scale.x = 0.08;
+	tars_robot.scale.y = 0.08;
+	tars_robot.scale.z = 0.08;
 
+	// miller.position.set(-60,20,0);
 
-   // miller.position.set(-60,20,0);
+	//edmons.position.set(15,0,15);
 
-    //edmons.position.set(15,0,15);
+	miller.position.set(-10, -15, 0);
+	edmons.position.set(20, 0, 15);
+	manns.position.set(-80, 15, -10);
 
-    miller.position.set(-10,-15,0);
-    edmons.position.set(20,0,15);
-    manns.position.set(-80,15,-10);
+	//miller.position.set(0,0,-30);
 
-    //miller.position.set(0,0,-30);
+	//edmons.position.set(30,0,-30);
 
-    //edmons.position.set(30,0,-30);
+	const millerMapUrl = "../images/millermap.jpg",
+		millerBumpMapUrl = "../images/millermap.jpg";
+	const edmonsMapUrl = "../images/edmonsmap.jpg",
+		edmonsBumpMapUrl = "../images/edmonsbump.jpg";
+	const mannsMapUrl = "../images/mannsmap.jpg",
+		mannsBumpMapUrl = "../images/mannsbump.jpg";
 
+	let urlMapsNames = [millerMapUrl, edmonsMapUrl, mannsMapUrl];
 
-    const millerMapUrl = "../images/millermap.jpg",      millerBumpMapUrl = "../images/millermap.jpg";
-    const edmonsMapUrl = "../images/edmonsmap.jpg",      edmonsBumpMapUrl = "../images/edmonsbump.jpg";
-    const mannsMapUrl = "../images/mannsmap.jpg",        mannsBumpMapUrl = "../images/mannsbump.jpg";
+	let urlBumpsNames = [millerBumpMapUrl, edmonsBumpMapUrl, mannsBumpMapUrl];
 
-    let urlMapsNames = [millerMapUrl, edmonsMapUrl, mannsMapUrl]; 
+	let elements = {};
+	let elementsTextured = {};
 
-    let urlBumpsNames =[millerBumpMapUrl, edmonsBumpMapUrl, mannsBumpMapUrl];
+	//Create Material
+	for (let i = 0; i < 3; i++) {
+		createMaterials(
+			urlMapsNames[i],
+			urlBumpsNames[i],
+			names[i],
+			namesTextures[i]
+		);
+	}
+	// Create mesh
+	let geometry = new THREE.SphereGeometry(2, 50, 50);
 
-    let elements = {}
-    let elementsTextured = {}
+	for (let i = 0; i < 3; i++) {
+		elements[i] = new THREE.Mesh(geometry, materials[names[i]]);
+		elements[i].visible = false;
+	}
 
-    //Create Material
-    for (let i = 0; i < 3; i++){
-        createMaterials(urlMapsNames[i], urlBumpsNames[i], names[i], namesTextures[i]);
-    }
-    // Create mesh
-    let geometry = new THREE.SphereGeometry(2, 50, 50);
+	geometry = new THREE.SphereGeometry(2, 50, 50);
+	for (let i = 0; i < 3; i++) {
+		elementsTextured[i] = new THREE.Mesh(
+			geometry,
+			materials[namesTextures[i]]
+		);
+		elementsTextured[i].visible = true;
+		elementsTextured[i].scale.x = tam[i];
+		elementsTextured[i].scale.y = tam[i];
+		elementsTextured[i].scale.z = tam[i];
+	}
 
-    for (let i = 0; i < 3; i++){
-        elements[i] = new THREE.Mesh(geometry, materials[names[i]]);
-        elements[i].visible = false;
-    }
+	miller.add(elements[0]);
+	miller.add(elementsTextured[0]);
+	edmons.add(elements[1]);
+	edmons.add(elementsTextured[1]);
+	manns.add(elements[2]);
+	manns.add(elementsTextured[2]);
 
-    geometry = new THREE.SphereGeometry(2, 50, 50);
-    for (let i = 0; i < 3; i++){
-        elementsTextured[i] = new THREE.Mesh(geometry, materials[namesTextures[i]]);
-        elementsTextured[i].visible = true;
-        elementsTextured[i].scale.x = tam[i];
-        elementsTextured[i].scale.y = tam[i];
-        elementsTextured[i].scale.z = tam[i];
-    }
-
-     
-    miller.add(elements[0]);
-    miller.add(elementsTextured[0]);
-    edmons.add(elements[1]);
-    edmons.add(elementsTextured[1]);
-    manns.add(elements[2]);
-    manns.add(elementsTextured[2]);
-
-    miller.name  = "Miller"
-    edmons.name = "Edmons"
-    manns.name = "Manns"
-
+	miller.name = "Miller";
+	edmons.name = "Edmons";
+	manns.name = "Manns";
 
 	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", tars_robot, 0.25);
-    
-    scene.add(miller);
-    scene.add(edmons);
-    scene.add(manns);
+
+	scene.add(miller);
+	scene.add(edmons);
+	scene.add(manns);
 	scene.add(tars_robot);
 
-    const video = document.getElementById('video');
+	const video = document.getElementById("video");
 	video.play();
 
-    //Create your video texture:
+	//Create your video texture:
 	const videoTexture = new THREE.VideoTexture(video);
-	const videoMaterial =  new THREE.MeshBasicMaterial( {map: videoTexture, side: THREE.FrontSide, toneMapped: false} );
+	const videoMaterial = new THREE.MeshBasicMaterial({
+		map: videoTexture,
+		side: THREE.FrontSide,
+		toneMapped: false,
+	});
 	//Create screen
-    const screen = new THREE.PlaneGeometry(1100, 800, 100, 100);
+	const screen = new THREE.PlaneGeometry(1100, 800, 100, 100);
 	videoScreen = new THREE.Mesh(screen, videoMaterial);
 	videoScreen.position.set(-300, -15, -1500);
 
-    //Raycaster
-    raycaster = new THREE.Raycaster();
-    document.addEventListener('pointerdown', onDocumentPointer);
+	//Raycaster
+	raycaster = new THREE.Raycaster();
+	document.addEventListener("pointerdown", onDocumentPointer);
 	scene.add(videoScreen);
 }
 
-function addSphere(){
+function addSphere() {
+	// The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
+	for (var z = -1000; z < 1000; z += 20) {
+		// Make a sphere (exactly the same as before).
+		var geometry = new THREE.SphereGeometry(0.5, 32, 32);
+		var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+		var sphere = new THREE.Mesh(geometry, material);
 
-    // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position. 
-    for ( var z= -1000; z < 1000; z+=20 ) {
+		// This time we give the sphere random x and y positions between -500 and 500
+		sphere.position.x = Math.random() * 1000 - 500;
+		sphere.position.y = Math.random() * 1000 - 500;
 
-        // Make a sphere (exactly the same as before). 
-        var geometry = new THREE.SphereGeometry(0.5, 32, 32)
-        var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-        var sphere   = new THREE.Mesh(geometry, material)
+		// Then set the z position to where it is in the loop (distance of camera)
+		sphere.position.z = z;
 
-        // This time we give the sphere random x and y positions between -500 and 500
-        sphere.position.x = Math.random() * 1000 - 500;
-        sphere.position.y = Math.random() * 1000 - 500;
+		// scale it up a bit
+		sphere.scale.x = sphere.scale.y = 2;
 
-        // Then set the z position to where it is in the loop (distance of camera)
-        sphere.position.z = z;
+		//add the sphere to the scene
+		scene.add(sphere);
 
-        // scale it up a bit
-        sphere.scale.x = sphere.scale.y = 2;
-
-        //add the sphere to the scene
-        scene.add( sphere );
-
-        //finally push it to the stars array 
-        stars.push(sphere); 
-    }
+		//finally push it to the stars array
+		stars.push(sphere);
+	}
 }
 
-function animateStars() { 
-    // loop through each star
-    for(var i=0; i<stars.length; i++) {
-        var star = stars[i];     
-        // and move it forward dependent on the mouseY position. 
-        star.position.z +=  i/10;      
-        // if the particle is too close move it to the back
-        if(star.position.z>1000) star.position.z-=2000; 
-    }
+function animateStars() {
+	// loop through each star
+	for (var i = 0; i < stars.length; i++) {
+		var star = stars[i];
+		// and move it forward dependent on the mouseY position.
+		star.position.z += i / 10;
+		// if the particle is too close move it to the back
+		if (star.position.z > 1000) star.position.z -= 2000;
+	}
 }
 
-function onDocumentPointer(event)
-{
-    event.preventDefault();
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+function onDocumentPointer(event) {
+	event.preventDefault();
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    raycaster.setFromCamera( mouse, camera );
+	raycaster.setFromCamera(mouse, camera);
 
-    let intersects = null;
-    intersects = raycaster.intersectObjects( miller.children );
+	let intersects = null;
+	intersects = raycaster.intersectObjects(miller.children);
 
-    let cual = "Miller"
-    if (intersects.length == 0){
-        
-        intersects = raycaster.intersectObjects( manns.children );
-        cual = "Manns"
-        if (intersects.length == 0){
-            intersects = raycaster.intersectObjects( edmons.children );
-            cual = "Edmons"
-        }
-    }
-    
-    if ( intersects.length > 0 ) 
-    {
-        if (cual == "Miller"){
-            console.log("miller")
-            clicked = intersects[ 0 ].object;
-            camera.position.set(-22,-30,6.4);
-            tars_robot.visible = false;
-            millerText.style.display = 'block';
-            infoScenes.style.display = 'none';
+	let cual = "Miller";
+	if (intersects.length == 0) {
+		intersects = raycaster.intersectObjects(manns.children);
+		cual = "Manns";
+		if (intersects.length == 0) {
+			intersects = raycaster.intersectObjects(edmons.children);
+			cual = "Edmons";
+		}
+	}
 
-        } 
-        else if (cual == "Edmons"){
-            console.log("edmons")
-            clicked = intersects[ 0 ].object;
-            camera.position.set(25.63,-0.2074,17.785);
-            tars_robot.visible = false;
-            edmonsText.style.display = 'block';
-            infoScenes.style.display = 'none';
-        }
-        else if (cual=="Manns"){
-            console.log("manns")
-            clicked = intersects[ 0 ].object;
-            camera.position.set(-89.52,16.79,-9.7945);
-            tars_robot.visible = false;
-            mannsText.style.display = 'block';
-            infoScenes.style.display = 'none';
-        }
-    } 
-    else 
-    {
-        if ( clicked ) 
-            camera.position.set(20, 10, 80);
-            tars_robot.visible = true;
-            millerText.style.display = 'none';
-            mannsText.style.display = 'none';
-            edmonsText.style.display = 'none';
-            infoScenes.style.display = 'block';
-        clicked = null;
-    }
+	if (intersects.length > 0) {
+		if (cual == "Miller") {
+			console.log("miller");
+			clicked = intersects[0].object;
+			camera.position.set(-22, -30, 6.4);
+			tars_robot.visible = false;
+			millerText.style.display = "block";
+			infoScenes.style.display = "none";
+		} else if (cual == "Edmons") {
+			console.log("edmons");
+			clicked = intersects[0].object;
+			camera.position.set(25.63, -0.2074, 17.785);
+			tars_robot.visible = false;
+			edmonsText.style.display = "block";
+			infoScenes.style.display = "none";
+		} else if (cual == "Manns") {
+			console.log("manns");
+			clicked = intersects[0].object;
+			camera.position.set(-89.52, 16.79, -9.7945);
+			tars_robot.visible = false;
+			mannsText.style.display = "block";
+			infoScenes.style.display = "none";
+		}
+	} else {
+		if (clicked)
+			setTimeout(function () {
+				camera.position.set(20, 10, 80);
+				tars_robot.visible = true;
+				millerText.style.display = "none";
+				mannsText.style.display = "none";
+				edmonsText.style.display = "none";
+				infoScenes.style.display = "block";
+				clicked = null;
+			}, 500);
+	}
 }
 
-function actualizaInfo(edadCopper, edadMurph, anio){
-    let texto = "Edad de Cooper: " + edadCopper.toString() + '\n' + "Edad de Murph: " + edadMurph.toString() + '\n' + "Año: " + anio.toString();
-    console.log(texto);
-    let finalText = texto.toString();
-    infoScenes.innerHTML = finalText;
+function actualizaInfo(edadCopper, edadMurph, anio) {
+	let texto =
+		"Edad de Cooper: " +
+		edadCopper.toString() +
+		"</br>" +
+		"Edad de Murph: " +
+		edadMurph.toString() +
+		"</br>" +
+		"Año: " +
+		anio.toString();
+	console.log(texto);
+	let finalText = texto.toString();
+	infoScenes.innerHTML = finalText;
 }
-
 
 function showModels() {
 	miller.visible = true;
@@ -417,18 +457,14 @@ function hideModels() {
 	videoScreen.visible = false;
 }
 
-async function loadFBX(fbxModelUrl, parent, scale=1)
-{
-    try{
-        let object = await new FBXLoader().loadAsync(fbxModelUrl);
+async function loadFBX(fbxModelUrl, parent, scale = 1) {
+	try {
+		let object = await new FBXLoader().loadAsync(fbxModelUrl);
 
 		object.scale.set(scale, scale, scale);
 
-        
-        parent.add( object );
-    }
-    catch(err)
-    {
-        console.error( err );
-    }
+		parent.add(object);
+	} catch (err) {
+		console.error(err);
+	}
 }

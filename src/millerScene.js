@@ -6,16 +6,16 @@ import { FirstPersonControls } from "https://threejs.org/examples/jsm/controls/F
 import { loadGLTF } from "./loaders.js";
 
 export class MillerScene {
-	constructor(renderer) {
+	constructor(renderer, moveToMainScene, setMillerGameCompleted) {
 		const scene = buildScene();
 		const camera = buildCamera();
 		const sky = buildSky();
 		const sun = buildSun();
 		const water = buildWater();
 		const fpc = buildFirstPersonControls(camera, renderer);
-        const maletin = buildMaletin(scene);
-        const nave = buildNave(scene);
-        const estacion = buildEstacion(scene);
+		const maletin = buildMaletin(scene);
+		const nave = buildNave(scene);
+		const estacion = buildEstacion(scene);
 
 		this.scene = scene;
 		this.renderer = renderer;
@@ -25,8 +25,8 @@ export class MillerScene {
 		this.sun = sun;
 		this.fpc = fpc;
 		this.maletin = maletin;
-        this.nave = nave;
-        this.estacion = estacion;
+		this.nave = nave;
+		this.estacion = estacion;
 		this.raycaster = new THREE.Raycaster(
 			new THREE.Vector3(),
 			new THREE.Vector3(0, -1, 0),
@@ -34,7 +34,17 @@ export class MillerScene {
 			15
 		);
 		this.maletinEncontrado = false;
-        this.startTime = Date.now();
+		this.startTime = Date.now();
+		this.tiempoRestanteLabel = document.getElementById("tiempoRestante");
+
+		this.running = true;
+        this.GAME_TIME = 60;
+
+        this.moveToMainScene = moveToMainScene;
+        this.setMillerGameCompleted = setMillerGameCompleted;
+
+        this.tiempoRestanteLabel.style.display = "grid";
+
 
 		function buildScene() {
 			const scene = new THREE.Scene();
@@ -113,9 +123,9 @@ export class MillerScene {
 
 		function buildEstacion(scene) {
 			const estacion = new THREE.Object3D();
-            estacion.visible = false;
-            scene.add(estacion);
-            estacion.position.y -= 10;
+			estacion.visible = false;
+			scene.add(estacion);
+			estacion.position.y -= 10;
 			return estacion;
 		}
 
@@ -143,6 +153,7 @@ export class MillerScene {
 
 	async init() {
 		await this.loadObjects();
+        console.log("objects loaded");
 	}
 
 	async loadObjects() {
@@ -150,25 +161,36 @@ export class MillerScene {
 
 		await loadGLTF("../assets/spaceship2/scene.gltf", this.nave, 300);
 
-        await loadGLTF("../assets/spaceship2/scene.gltf", this.estacion, 300);
+		await loadGLTF("../assets/spaceship2/scene.gltf", this.estacion, 300);
 	}
 
-    getTiempoRestante() {
-        const tiempoRestante = (this.startTime + (15 * 1000)) - Date.now();
-        return Math.round(tiempoRestante / 1000);
-    }
+	getTiempoRestante() {
+		const tiempoRestante = this.startTime + this.GAME_TIME * 1000 - Date.now();
+		return Math.round(tiempoRestante / 1000);
+	}
 
-    resetScene() {
-        this.camera.position.set(70, 40, 100);
-        this.maletin.visible = true;
-        this.maletinEncontrado = false;
-        this.startTime = Date.now();
-    }
+	resetScene() {
+		this.camera.position.set(70, 40, 100);
+		this.maletin.visible = true;
+		this.maletinEncontrado = false;
+		this.startTime = Date.now();
+	}
 
 	update() {
-        if (this.getTiempoRestante() <= 0) {
-            this.resetScene();
-        }
+		if (!this.running) return;
+
+		if (this.getTiempoRestante() <= 0) {
+			this.running = false;
+			if (window.confirm("Haz perdido! Deseas volver a intentarlo?")) {
+                this.resetScene();
+                this.running = true;
+			} else {
+				this.moveToMainScene();
+                this.tiempoRestanteLabel.style.display = "none";
+			}
+		}
+
+		this.tiempoRestanteLabel.innerHTML = `<strong> Tiempo restante: </strong> ${this.getTiempoRestante()}`;
 
 		// Animates water
 		this.water.material.uniforms["time"].value += 1.0 / 60.0;
@@ -181,7 +203,7 @@ export class MillerScene {
 		this.fpc.update(time / 100);
 
 		this.raycaster.ray.origin.copy(this.camera.position);
-		this.raycaster.ray.origin.y -= 10;
+		this.raycaster.ray.origin.y -= 20;
 
 		if (!this.maletinEncontrado) {
 			const intersects = this.raycaster.intersectObject(
@@ -191,21 +213,22 @@ export class MillerScene {
 			if (intersects.length > 0) {
 				this.maletinEncontrado = true;
 				this.maletin.visible = false;
-                this.
-                console.log("Maletin encontrado");
+				console.log("Maletin encontrado");
 			}
-		} 
-        else {
-            let intersectaEstacion = this.raycaster.intersectObjects(
-                [this.estacion],
-                true
-            ).length > 0;
-            if (intersectaEstacion) {
-                // finaliza el juego
-            }
-        }
-
-        console.log(this.getTiempoRestante());
+		} else {
+			let intersectaEstacion =
+				this.raycaster.intersectObjects([this.estacion], true).length >
+				0;
+			if (intersectaEstacion) {
+				// finaliza el juego
+				this.running = false;
+				if (!alert("Felicidades! Has logrado recuperar el maletin demanera exitosa!")) {
+                    this.setMillerGameCompleted();
+                    this.moveToMainScene();
+                    this.tiempoRestanteLabel.style.display = "none";
+                }
+			}
+		}
 
 		this.renderer.render(this.scene, this.camera);
 	}

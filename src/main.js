@@ -11,12 +11,15 @@ let scenes = {
 	millerScene: null,
 };
 
+let millerGameCompleted = false;
+
 async function main() {
 	const canvas = document.getElementById("webglcanvas");
 
 	await createSceneManager(canvas);
 
 	currentScene = scenes.mainScene;
+	// currentScene = scenes.millerScene;
 
 	update();
 }
@@ -31,12 +34,34 @@ async function createSceneManager(canvas) {
 
 	renderer.outputEncoding = THREE.sRGBEncoding;
 
-	scenes.mainScene = new MainScene(renderer);
+	scenes.mainScene = new MainScene(renderer, moveToMillerScene, getMillerGameCompleted, true);
 
-	scenes.millerScene = new MillerScene(renderer);
+	scenes.millerScene = new MillerScene(renderer, moveToMainScene, setMillerGameCompleted);
 
 	scenes.mainScene.init();
 	scenes.millerScene.init();
+}
+
+function moveToMillerScene() {
+	if (millerGameCompleted) return;
+	scenes.millerScene = new MillerScene(renderer, moveToMainScene, setMillerGameCompleted);
+	scenes.millerScene.init();
+	currentScene = scenes.millerScene;
+}
+
+function moveToMainScene() {
+	scenes.mainScene = new MainScene(renderer, moveToMillerScene, getMillerGameCompleted, false);
+	scenes.mainScene.init()
+	currentScene = scenes.mainScene;
+}
+
+function setMillerGameCompleted() {
+	millerGameCompleted = true;
+}
+
+function getMillerGameCompleted() {
+	console.log(millerGameCompleted);
+	return millerGameCompleted;
 }
 
 function update() {
