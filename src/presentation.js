@@ -1,5 +1,4 @@
 import * as THREE from "../libs/three.js/r131/three.module.js";
-import { GLTFLoader } from '../libs/three.js/r131/loaders/GLTFLoader.js';
 import { FBXLoader } from '../libs/three.js/r131/loaders/FBXLoader.js';
 import { OrbitControls } from "../libs/three.js/r131/controls/OrbitControls.js";
 
@@ -50,6 +49,7 @@ function main() {
 	const canvas = document.getElementById("webglcanvas");
     continueButton.addEventListener('click', playText);
 	// create the scene
+
 	createScene(canvas);
 	// update the update loop
 	update();
@@ -170,7 +170,7 @@ function createMaterials(mapUrl, bumpMapUrl, nombre, nombreTexture)
 }
 
 async function createScene(canvas) {
-	renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
 	renderer.setSize(canvas.width, canvas.height);
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -272,7 +272,7 @@ async function createScene(canvas) {
 
 
 	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", tars_robot, 0.25);
-
+    
     scene.add(miller);
     scene.add(edmons);
     scene.add(manns);
@@ -362,8 +362,6 @@ function onDocumentPointer(event)
         if (cual == "Miller"){
             console.log("miller")
             clicked = intersects[ 0 ].object;
-            //camera.position.set(-22,1,6.4);
-            //camera.position.set(26.53,-100,47.84);
             camera.position.set(-22,-30,6.4);
             tars_robot.visible = false;
             millerText.style.display = 'block';
@@ -429,37 +427,6 @@ window.onload = () => {
 
 window.addEventListener("resize", resize, false);
 
-function onError ( err ){ console.error( err ); };
-
-function onProgress( xhr ) 
-{
-    if ( xhr.lengthComputable ) {
-
-        const percentComplete = xhr.loaded / xhr.total * 100;
-        console.log( xhr.target.responseURL, Math.round( percentComplete, 2 ) + '% downloaded' );
-    }
-}
-
-async function loadGLTF(url, parent, scale=1, rotateX=0) {
-	const loader = new GLTFLoader();
-
-	const object = await loader.loadAsync(
-		// resource URL
-		url,
-		// called while loading is progressing
-		onProgress,
-		// called when loading has errors
-		onError
-	);
-	
-	object.scene.scale.set(scale, scale, scale);
-
-	object.scene.rotateX(rotateX);
-
-	console.log(object.scene);
-
-	parent.add(object.scene);
-}
 async function loadFBX(fbxModelUrl, parent, scale=1)
 {
     try{
