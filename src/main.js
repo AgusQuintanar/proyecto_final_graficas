@@ -1,24 +1,22 @@
 import * as THREE from "../libs/three.js/r131/three.module.js";
-import { MillerScene } from './millerScene.js';
+import { MillerScene } from "./millerScene.js";
 
 import { MainScene } from "./mainScene.js";
-
 
 let renderer = null,
 	currentScene = null;
 
 let scenes = {
 	mainScene: null,
-	millerScene: null
-}
-	
+	millerScene: null,
+};
+
 async function main() {
 	const canvas = document.getElementById("canvas");
 
 	await createSceneManager(canvas);
 
 	currentScene = scenes.millerScene;
-
 
 	update();
 }
@@ -34,11 +32,15 @@ async function createSceneManager(canvas) {
 	renderer.outputEncoding = THREE.sRGBEncoding;
 
 	scenes.mainScene = new MainScene(renderer);
-	await scenes.mainScene.init();
+
 	scenes.millerScene = new MillerScene(renderer);
+
+	// for (const scene in scenes) {
+	// 	scenes[scene].init();
+	// }
+
+	scenes.millerScene.init();
 }
-
-
 
 function update() {
 	requestAnimationFrame(function () {
@@ -48,11 +50,9 @@ function update() {
 	currentScene.update();
 }
 
-
-
 function resize() {
-    // En caso de que se haga un resize de la ventana del navegador,
-    // se actualiza el aspecto de la camara
+	// En caso de que se haga un resize de la ventana del navegador,
+	// se actualiza el aspecto de la camara
 	const canvas = document.getElementById("canvas");
 
 	canvas.width = document.body.clientWidth;

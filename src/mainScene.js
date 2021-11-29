@@ -20,8 +20,6 @@ export class MainScene {
 
 		createAmbiente(this.scene);
 
-        
-
 		function buildScene() {
 			const scene = new THREE.Scene();
 			return scene;
