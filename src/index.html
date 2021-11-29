@@ -1,29 +1,87 @@
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>Interstellar</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Interstellar</title>
 
-<link rel="stylesheet" href="../styles/main.css" />
+        <link rel="stylesheet" href="../styles/main.css" />
 
-<script type="module"  defer src="main.js"></script>
+        <script type="module" defer src="presentation.js"></script>
 
-<style>
-    body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      border: 0;
-      overflow: hidden; 
-    }
-</style>
+        <style>
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                border: 0;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="webglcanvas"></canvas>
+        <audio id="audio">
+            <source src="../assets/music.mp3" type="audio/mp3" />
+        </audio>
 
-</head>
-<body>
-    <canvas id="webglcanvas"></canvas>
-    <div id="info">El sistema de dialogos estara implementado mediante HTML</div>
+        <div id="info">
+            An Interstellar Experience
+        </div>
 
-    <video id="video" playsinline webkit-playsinline muted loop autoplay width="320" height="240" src="../assets/wormhole.mp4" style="display: none;"></video>
+        <div><a class="initB" id="start" href="#">CONTINUAR</a></div>
 
-</body>
+        <div id="tars"></div>
 
+        <div id="scenes"></div>
+
+        <div id="miller"></div>
+
+		<div class="cuadroFinal">
+			Gracias por Jugar
+		</div>
+
+        <div class="cuadroTextMiller">
+			<div class="imageV">
+				<img class="imageV" src="../images/miller_card.jpg">
+			</div>
+			<div class="contenido">
+				<h1>Planeta de Miller</h1>
+				<p>Miller podría ser una buena opción para vivir. La Dra. Miller mandó información a la Tierra antes de ellos partir pero no fue suficiente, por lo cual deberás bajar a recoger la caja negra con datos del planeta. Sin embargo, considera que cada hora en este planeta equivale a ¡7 años en la Tierra!</p>
+				<a href="#" id="misionMiller">Ir a la mision</a>
+			</div>
+        </div>
+
+		<div class="cuadroTextManns">
+			<div class="imageH">
+				<img class="imageH" src="../images/manns_card.png">
+			</div>
+			<div class="contenido">
+				<h1>Planeta de Manns</h1>
+				<p> El Dr. Mans arrojado información valiosa sobre su planeta, aunque pareciera ser es de puro ¿hielo?</p>
+			</div>
+        </div>
+
+		<div class="cuadroTextEdmons">
+			<div class="imageH">
+				<img class="imageH" src="../images/edmons_card.png">
+			</div>
+			<div class="contenido">
+				<h1>Planeta de Edmuns</h1>
+				<p>El Dr. Edmonds no ha mandado señales de su planeta aunque las investigaciones parecen arrojar que podría ser buen candidato, quizá plantar la nueva generación de humanos en este planeta sea buena idea.</p>
+				<a href="#" id="misionEdmons">Ir a la mision</a>
+			</div>
+        </div>
+
+        <video
+            id="video"
+            playsinline
+            webkit-playsinline
+            muted
+            loop
+            autoplay
+            width="320"
+            height="240"
+            src="../assets/gargantua_video.mp4"
+            style="display: none"
+        ></video>
+    </body>
 </html>
