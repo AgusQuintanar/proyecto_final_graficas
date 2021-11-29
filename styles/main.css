@@ -10,20 +10,17 @@ body {
 	color:rgb(10, 0, 0);
 }
 
-#container {
-	position:absolute;
-}
 
-#canvas {
+#webglcanvas {
 	border:none;
-	background-color:#000000;
-	width: 100vw;
-	height: 100vh;
+	background-color:black;
+	width: 100%;
+    height: 100%;
 }
 
 #info {
 	position: absolute;
-	bottom: 10vh;
+	bottom: 50vh;
 	width: 100%;
 	text-align: center;
 	z-index: 100;
@@ -31,3 +28,142 @@ body {
 	color: white;
 	font-size: 3em;
 }
+
+.cuadroTextMiller {
+	position: absolute;
+	bottom: 7vh;
+	width: 25vw;
+	height: 65vh;
+	text-align: center;
+	z-index: 100;
+	display:none;
+	color: rgb(17, 1, 1);
+	font-size: 3em;
+	background-color: rgb(212, 229, 243);
+	left: 60vw;
+	margin: 20px;
+	border-radius: 6px;
+}
+
+.cuadroTextEdmons {
+	position: absolute;
+	bottom: 25vh;
+	width: 25vw;
+	height: 65vh;
+	text-align: center;
+	z-index: 100;
+	display:none;
+	color: rgb(17, 1, 1);
+	font-size: 3em;
+	background-color: rgb(212, 229, 243);
+	left: 60vw;
+	margin: 20px;
+	border-radius: 6px;
+}
+
+.cuadroTextManns {
+	position: absolute;
+	bottom: 25vh;
+	width: 25vw;
+	height: 40vh;
+	text-align: center;
+	z-index: 100;
+	display:none;
+	color: rgb(17, 1, 1);
+	font-size: 3em;
+	background-color: rgb(212, 229, 243);
+	left: 60vw;
+	margin: 20px;
+	border-radius: 6px;
+}
+
+.contenido{
+	padding: 15px;
+	text-align: center;
+}
+
+.contenido p{
+	line-height: 1.5;
+}
+
+.imageV{
+    width: auto;
+	height: 15vh;
+	padding: 10 25%;
+	
+}
+
+.imageH{
+    width: auto;
+	height: 15vh;
+	padding: 10 15%;
+	
+}
+#tars {
+	position: absolute;
+	bottom: 8vh;
+	width: 80%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	color: white;
+	font-size: 2em;
+
+}
+
+#scenes{
+	position: absolute;
+	bottom: 80vh;
+	width: 90%;
+	text-align: right;
+	z-index: 100;
+	display:block;
+	color: white;
+	font-size: 1.5em;
+
+}
+
+#start {
+	position: absolute;
+	bottom: 30vh;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	color: white;
+	font-size: 2em;
+}
+
+
+.contenido a{
+	text-decoration: none;
+	display: inline-block;
+	padding: 10px;
+	margin-top: 10px;
+	color:rgb(5, 51, 51);
+	border: 1px solid rgb(5, 51, 51);
+	border-radius: 4px;
+
+}
+
+.initB{
+	text-decoration: none;
+	display: inline-block;
+	padding: 10px;
+	margin-top: 10px;
+	color:rgb(5, 51, 51);
+	border-radius: 4px;
+}
+
+.cuadrofinal{
+	position: absolute;
+	bottom: 50vh;
+	width: 100%;
+	z-index: 100;
+	display:none;
+	color: white;
+	font-size: 2em;
+	left: 5vw;
+
+}
+
