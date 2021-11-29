@@ -12,6 +12,8 @@ import { RoughnessMipmapper } from '../libs/loaders/RoughnessMipmapper.js';
 import { OrbitControls } from "../libs/three.js/r131/controls/OrbitControls.js";
 
 
+let p6 = null;
+
 let renderer = null,
 	scene = null,
 	camera = null,
@@ -31,21 +33,36 @@ let textureMap = null;
 let bumpMap = null;
 let materials = {};
 
+let tam = [2, 0.6, 1];
+
 const miller = new THREE.Object3D();
 const edmons = new THREE.Object3D();
+const manns = new THREE.Object3D();
 
 
-let names = ["miller", "edmons"];
-let namesTextures = ["miller-textured", "edmons-textured"];
+let raycaster = null, mouse = new THREE.Vector2(), intersected, clicked;
+
+
+let names = ["miller", "edmons", "manns"];
+let namesTextures = ["miller-textured", "edmons-textured", "manns-textured"];
 
 const infoDisplay = document.querySelector('#info');
+const tarsDisplay = document.querySelector('#tars');
 const continueButton = document.querySelector('#start');
+const millerText = document.querySelector('.cuadroTextMiller');
+const mannsText = document.querySelector('.cuadroTextManns');
+const edmonsText = document.querySelector('.cuadroTextEdmons');
+const infoScenes = document.querySelector('#scenes');
 
 
 function main() {
 
 	const canvas = document.getElementById("webglcanvas");
     continueButton.addEventListener('click', playText);
+
+    
+
+    
 
 
 	// create the scene
@@ -63,6 +80,12 @@ function playText(){
         "Joseph Cooper, ex piloto de la NASA ha sido reclutado nuevamente para emprender una misión Interestelar para encontrar un planeta fuera de nuestra galaxia que pueda albergar vida humana",
         "Conociendo los peligros de la misión, Cooper decide dejar en la Tierra aquellos que él ama, en especial la pequeña Murph de tan solo 13 años",
         "La misión conformada por los astronautas Romilly, Doyle y Amelia podria tomar decadas, pues tendrian que evaluar los planetas cercanos al agujero negro Gargantúa"];
+
+    let textTars = [ "Soy TARS, un robot con inteligencia artificial que te acompañará en esta aventura interestelar. ",
+                    "Han pasado 2 años desde el despegue de Cooper de la Tierra, han atravesado el agujero de gusano de Saturno y ahora se encuentran en la Galaxia lejana que contiene a Gargantúa. ",
+                    "En la parte superior derecha podrás ver información que ayudará a entender la relatividad del tiempo en esta experiencia Interstellar.",
+                    "Actualmente Cooper tiene 35 años, Murph 15 años y nos encontramos en el año 2069.",
+                    "Te toca elegir qué experiencia vivir. Da clic en alguno de los planetas y descubre que sucederá."];
 
     setTimeout(function(){
         infoDisplay.innerHTML = text[0];
@@ -84,6 +107,29 @@ function playText(){
         infoDisplay.innerHTML = "";
     }, 40000);
 
+    setTimeout(function(){   
+        tarsDisplay.innerHTML = textTars[0];
+    }, 50000);
+
+    setTimeout(function(){
+        tarsDisplay.innerHTML = textTars[1];
+    }, 60000);
+
+    setTimeout(function(){
+        tarsDisplay.innerHTML = textTars[2];
+        actualizaInfo(35,15,2069);
+    }, 70000);
+
+    setTimeout(function(){
+        tarsDisplay.innerHTML = textTars[3]; 
+    }, 80000);
+
+    setTimeout(function(){
+        tarsDisplay.innerHTML = textTars[4];
+    }, 90000);
+
+    
+
     
 }
 
@@ -102,6 +148,8 @@ function animate() {
     // Rotate the sphere group about its Y axis
     miller.rotation.y += angle2;
     edmons.rotation.y += angle2;
+    manns.rotation.y += angle2;
+
 
 }
 
@@ -135,6 +183,8 @@ function update() {
 	});
 
 	renderer.render(scene, camera);
+
+    //console.log(camera.position)
 
 	animate();
 
@@ -172,14 +222,15 @@ async function createScene(canvas) {
 		1,
 		4000
 	);
-	camera.position.set(0, 10, 40); // cambiamos la posicion de la camara
-	scene.add(camera);
+	camera.position.set(20, 10, 80); // cambiamos la posicion de la camara
+    //camera.position.set(0, 0, 0); // cambiamos la posicion de la camara
+	scene.add(camera.position);
 
     // usamos los orbits controls para poder interactual con la escena de manera dinamica
 	orbitControls = new OrbitControls(camera, renderer.domElement); 
+    console.log(camera)
 
 	createAmbiente();
-	
 
 	const p1 = new THREE.Object3D();
 	const p2 = new THREE.Object3D();
@@ -190,42 +241,65 @@ async function createScene(canvas) {
 	p4.position.set(-750, 0, 0);
 	const p5 = new THREE.Object3D();
 	p5.position.set(-1000, 0, 100);
-	const p6 = new THREE.Object3D();
-	p6.position.set(-750, 400, 0);
+	p6 = new THREE.Object3D();
+	//p6.position.set(30, 10, 0);
+    //camera.position.set(20, 10, 80);
+
+    p6.position.set(40, -8, 28);
+    p6.rotateY(Math.PI / 25);
+
+    p6.scale.x = 0.08;
+    p6.scale.y = 0.08;
+    p6.scale.z = 0.08;
 
 
     
-    miller.position.set(-30,0,0);
+   // miller.position.set(-60,20,0);
 
-    edmons.position.set(20,0,0);
+    //edmons.position.set(15,0,15);
+
+    miller.position.set(-10,0,0);
+
+    edmons.position.set(20,0,15);
+
+    manns.position.set(-80,15,-10);
+
+    //miller.position.set(0,0,-30);
+
+    //edmons.position.set(30,0,-30);
+
 
     const millerMapUrl = "../images/millermap.jpg",      millerBumpMapUrl = "../images/millermap.jpg";
     const edmonsMapUrl = "../images/edmonsmap.jpg",      edmonsBumpMapUrl = "../images/edmonsbump.jpg";
+    const mannsMapUrl = "../images/mannsmap.jpg",        mannsBumpMapUrl = "../images/mannsbump.jpg";
 
-    let urlMapsNames = [millerMapUrl, edmonsMapUrl]; 
+    let urlMapsNames = [millerMapUrl, edmonsMapUrl, mannsMapUrl]; 
 
-    let urlBumpsNames =[millerBumpMapUrl, edmonsBumpMapUrl];
+    let urlBumpsNames =[millerBumpMapUrl, edmonsBumpMapUrl, mannsBumpMapUrl];
 
     let elements = {}
     let elementsTextured = {}
 
     //Create Material
-    for (let i = 0; i < 2; i++){
+    for (let i = 0; i < 3; i++){
         createMaterials(urlMapsNames[i], urlBumpsNames[i], names[i], namesTextures[i]);
     }
     
     // Create mesh
     let geometry = new THREE.SphereGeometry(2, 50, 50);
 
-    for (let i = 0; i < 2; i++){
+    for (let i = 0; i < 3; i++){
         elements[i] = new THREE.Mesh(geometry, materials[names[i]]);
         elements[i].visible = false;
     }
 
     geometry = new THREE.SphereGeometry(2, 50, 50);
-    for (let i = 0; i < 2; i++){
+    for (let i = 0; i < 3; i++){
         elementsTextured[i] = new THREE.Mesh(geometry, materials[namesTextures[i]]);
         elementsTextured[i].visible = true;
+        elementsTextured[i].scale.x = tam[i];
+        elementsTextured[i].scale.y = tam[i];
+        elementsTextured[i].scale.z = tam[i];
     }
 
      
@@ -233,7 +307,12 @@ async function createScene(canvas) {
     miller.add(elementsTextured[0]);
     edmons.add(elements[1]);
     edmons.add(elementsTextured[1]);
+    manns.add(elements[2]);
+    manns.add(elementsTextured[2]);
 
+    miller.name  = "Miller"
+    edmons.name = "Edmons"
+    manns.name = "Manns"
 
 	let waves = {obj:'../assets/waves/Ocean.obj', mtl:'../assets/waves/Ocean.obj.sxfil.mtl'};
 
@@ -249,14 +328,23 @@ async function createScene(canvas) {
 
 	await loadFBX("../assets/tars/OrangeBOT_FBX.fbx", p6, 0.25);
 
-	scene.add(p1);
+	
+    //scene.add(p1);
+    
     scene.add(miller);
     scene.add(edmons);
+    scene.add(manns);
+
+
+
+  
+
 	//scene.add(p2);
 	//scene.add(p3);
 	//scene.add(p4);
 	//scene.add(p5);
-	//scene.add(p6);
+    
+	scene.add(p6);
 
 	const video = document.getElementById('video');
 	video.play();
@@ -271,7 +359,83 @@ async function createScene(canvas) {
 	const screen = new THREE.PlaneGeometry(900, 600, 100, 100);
 	const videoScreen = new THREE.Mesh(screen, videoMaterial);
 	videoScreen.position.set(-1000, 800, 0);
+
+    //Raycaster
+    raycaster = new THREE.Raycaster();
+
+    document.addEventListener('pointerdown', onDocumentPointerDownMiller);
 	scene.add(videoScreen);
+
+}
+
+function onDocumentPointerDownMiller(event)
+{
+    event.preventDefault();
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    raycaster.setFromCamera( mouse, camera );
+
+    let intersects = null;
+    intersects = raycaster.intersectObjects( miller.children );
+
+    let cual = "Miller"
+    if (intersects.length == 0){
+        
+        intersects = raycaster.intersectObjects( manns.children );
+        cual = "Manns"
+        if (intersects.length == 0){
+            intersects = raycaster.intersectObjects( edmons.children );
+            cual = "Edmons"
+        }
+    }
+    
+    if ( intersects.length > 0 ) 
+    {
+        if (cual == "Miller"){
+            console.log("miller")
+            clicked = intersects[ 0 ].object;
+            camera.position.set(-22,1,6.4);
+            p6.visible = false;
+            millerText.style.display = 'block';
+
+        } 
+        else if (cual == "Edmons"){
+            console.log("edmons")
+            clicked = intersects[ 0 ].object;
+            camera.position.set(25.63,-0.2074,17.785);
+            p6.visible = false;
+            edmonsText.style.display = 'block';
+        }
+        else if (cual=="Manns"){
+            console.log("manns")
+            clicked = intersects[ 0 ].object;
+            camera.position.set(-89.52,16.79,-9.7945);
+            p6.visible = false;
+            mannsText.style.display = 'block';
+        }
+    } 
+    else 
+    {
+        if ( clicked ) 
+            camera.position.set(20, 10, 80);
+            p6.visible = true;
+            millerText.style.display = 'none';
+            mannsText.style.display = 'none';
+            edmonsText.style.display = 'none';
+        clicked = null;
+    }
+}
+
+
+
+function actualizaInfo(edadCopper, edadMurph, anio){
+    let texto = "Edad de Cooper: " + edadCopper.toString() + '\n' + "Edad de Murph: " + edadMurph.toString() + '\n' + "Año: " + anio.toString();
+    console.log(texto);
+    let finalText = texto.toString();
+
+    infoScenes.innerHTML = finalText;
+    //infoScenes.innerHTML = 'Edad de Cooper: ' + edadCopper + '\n Edad de Murph: ' + edadMurph + '\n Año: ' + anio;
 
 }
 
