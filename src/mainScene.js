@@ -51,39 +51,55 @@ const infoScenes = document.querySelector("#scenes");
 const canvas = document.getElementById("webglcanvas");
 
 const btnMisionMiller = document.querySelector("#misionMiller");
+const btnMisionEdmons = document.querySelector("#misionEdmons");
+
+let firstTime = true;
 
 export class MainScene {
-	constructor(render, moveToMillerScene, getMillerGameCompleted, firstTime) {
+	constructor(
+		render,
+		moveToMillerScene,
+		getMillerGameCompleted,
+		firstT,
+		getEdmonsGameCompleted,
+		moveToEdmonsScene
+	) {
 		renderer = render;
+
+		firstTime = firstT;
 
 		if (firstTime) {
 			continueButton.addEventListener("click", playText);
 		} else {
 			infoDisplay.style.display = "none";
 			continueButton.style.display = "none";
+			actualizaInfo(58, 38, 2092);
+			
 		}
 
 		console.log("mision completada", getMillerGameCompleted());
 		if (getMillerGameCompleted()) {
 			btnMisionMiller.innerHTML = "Mision completada";
 			btnMisionMiller.disabled = true;
-			btnMisionMiller.addEventListener("click", () => {
-				console.log("nada");
-			});
 		} else {
 			btnMisionMiller.addEventListener("click", () => {
-				console.log("click");
 				moveToMillerScene();
 				infoDisplay.style.display = "none";
 				continueButton.style.display = "none";
 				tarsDisplay.style.display = "none";
 			});
 		}
+
+		btnMisionEdmons.addEventListener("click", () => {
+			moveToEdmonsScene();
+		});
 	}
 
 	async init() {
 		await createScene(renderer);
-		// hideModels();
+		if (firstTime) {
+			hideModels();
+		}
 	}
 
 	update() {
@@ -130,7 +146,7 @@ function playText() {
 	setTimeout(function () {
 		infoDisplay.innerHTML = "";
 		showModels();
-	}, 40000);
+	}, 39000);
 
 	setTimeout(function () {
 		tarsDisplay.innerHTML = textTars[0];

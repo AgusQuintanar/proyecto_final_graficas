@@ -5,6 +5,8 @@ import { Sky } from "https://threejs.org/examples/jsm/objects/Sky.js";
 import { FirstPersonControls } from "https://threejs.org/examples/jsm/controls/FirstPersonControls.js";
 import { loadGLTF } from "./loaders.js";
 
+const tarsDisplay = document.querySelector("#tars");
+
 export class MillerScene {
 	constructor(renderer, moveToMainScene, setMillerGameCompleted) {
 		const scene = buildScene();
@@ -132,7 +134,7 @@ export class MillerScene {
 		function buildMaletin(scene) {
 			const maletin = new THREE.Object3D();
 			scene.add(maletin);
-			maletin.position.set(250, 250, 0);
+			maletin.position.set(2500, 2500, 0);
 			return maletin;
 		}
 
@@ -226,6 +228,13 @@ export class MillerScene {
                     this.setMillerGameCompleted();
                     this.moveToMainScene();
                     this.tiempoRestanteLabel.style.display = "none";
+                    setTimeout(function () {
+                        tarsDisplay.innerHTML = "Parece ser que fuiste azotado por una ola en Miller. Has perdido 23 años dentro del planeta. ¿Qué tal si exploras los sucesos de los demás planetas?";
+                    }, 1000);
+                    setTimeout(function () {
+                        tarsDisplay.innerHTML = "";
+                    }, 6000);
+                    
                 }
 			}
 		}

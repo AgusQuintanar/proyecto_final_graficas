@@ -11,7 +11,12 @@ let scenes = {
 	millerScene: null,
 };
 
+//Música a la escena
+var music = document.getElementById("audio");
+music.play();
+
 let millerGameCompleted = false;
+let edmonsGameCompleted = false;
 
 async function main() {
 	const canvas = document.getElementById("webglcanvas");
@@ -34,9 +39,33 @@ async function createSceneManager(canvas) {
 
 	renderer.outputEncoding = THREE.sRGBEncoding;
 
-	scenes.mainScene = new MainScene(renderer, moveToMillerScene, getMillerGameCompleted, true);
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const edmondsCompleted = urlParams.get("edmondsCompleted");
 
-	scenes.millerScene = new MillerScene(renderer, moveToMainScene, setMillerGameCompleted);
+	console.log("Edmondssss", edmondsCompleted);
+
+	let showIntro = true;
+
+	if (edmondsCompleted) {
+		edmonsGameCompleted = true;
+		showIntro = false;
+	}
+
+	scenes.mainScene = new MainScene(
+		renderer,
+		moveToMillerScene,
+		getMillerGameCompleted,
+		showIntro,
+		getEdmonsGameCompleted,
+		moveToEdmonsScene
+	);
+
+	scenes.millerScene = new MillerScene(
+		renderer,
+		moveToMainScene,
+		setMillerGameCompleted
+	);
 
 	scenes.mainScene.init();
 	scenes.millerScene.init();
@@ -44,14 +73,32 @@ async function createSceneManager(canvas) {
 
 function moveToMillerScene() {
 	if (millerGameCompleted) return;
-	scenes.millerScene = new MillerScene(renderer, moveToMainScene, setMillerGameCompleted);
+	scenes.millerScene = new MillerScene(
+		renderer,
+		moveToMainScene,
+		setMillerGameCompleted
+	);
 	scenes.millerScene.init();
 	currentScene = scenes.millerScene;
 }
 
+function moveToEdmonsScene() {
+	if (!millerGameCompleted) {
+		alert("Debes completar la mision de Miller para poder llegar a Edmons");
+		return;
+	}
+	window.location.href = "./gargantua/gargantua_minigame.html";
+}
+
 function moveToMainScene() {
-	scenes.mainScene = new MainScene(renderer, moveToMillerScene, getMillerGameCompleted, false);
-	scenes.mainScene.init()
+	scenes.mainScene = new MainScene(
+		renderer,
+		moveToMillerScene,
+		getMillerGameCompleted,
+		false,
+		getEdmonsGameCompleted
+	);
+	scenes.mainScene.init();
 	currentScene = scenes.mainScene;
 }
 
@@ -64,10 +111,22 @@ function getMillerGameCompleted() {
 	return millerGameCompleted;
 }
 
+function setEdmonsGameCompleted() {
+	edmonsGameCompleted = true;
+}
+
+function getEdmonsGameCompleted() {
+	console.log(edmonsGameCompleted);
+	return edmonsGameCompleted;
+}
 function update() {
 	requestAnimationFrame(function () {
 		update();
 	});
+
+	if (edmonsGameCompleted && millerGameCompleted) {
+		window.location.href = "./final.html";
+	}
 
 	currentScene.update();
 }
